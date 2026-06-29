@@ -1,5 +1,6 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import confetti from "canvas-confetti";
 import { useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/app/statement")({
@@ -49,6 +50,12 @@ function StatementFlow() {
     bumpScore("statement", 25);
     unlock("first_statement");
     setDone(true);
+    // Subtle banking-appropriate confetti
+    try {
+      const colors = ["#1C4FA3", "#2E6FD8", "#16A34A", "#F59E0B"];
+      confetti({ particleCount: 70, spread: 60, origin: { y: 0.35 }, colors, scalar: 0.85, ticks: 160 });
+      setTimeout(() => confetti({ particleCount: 40, spread: 90, origin: { y: 0.45 }, colors, scalar: 0.7 }), 220);
+    } catch { /* noop */ }
     if (demoMode) {
       autoRef.current = setTimeout(() => {
         setDemoMode(false);
