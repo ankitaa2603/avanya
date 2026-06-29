@@ -16,6 +16,7 @@ import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppStatementRouteImport } from './routes/app.statement'
 import { Route as AppRoiRouteImport } from './routes/app.roi'
 import { Route as AppAssistantRouteImport } from './routes/app.assistant'
+import { Route as AppArchitectureRouteImport } from './routes/app.architecture'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
 
 const LoginRoute = LoginRouteImport.update({
@@ -53,6 +54,11 @@ const AppAssistantRoute = AppAssistantRouteImport.update({
   path: '/assistant',
   getParentRoute: () => AppRoute,
 } as any)
+const AppArchitectureRoute = AppArchitectureRouteImport.update({
+  id: '/architecture',
+  path: '/architecture',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAdminRoute = AppAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/architecture': typeof AppArchitectureRoute
   '/app/assistant': typeof AppAssistantRoute
   '/app/roi': typeof AppRoiRoute
   '/app/statement': typeof AppStatementRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/architecture': typeof AppArchitectureRoute
   '/app/assistant': typeof AppAssistantRoute
   '/app/roi': typeof AppRoiRoute
   '/app/statement': typeof AppStatementRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/architecture': typeof AppArchitectureRoute
   '/app/assistant': typeof AppAssistantRoute
   '/app/roi': typeof AppRoiRoute
   '/app/statement': typeof AppStatementRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/login'
     | '/app/admin'
+    | '/app/architecture'
     | '/app/assistant'
     | '/app/roi'
     | '/app/statement'
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/app/admin'
+    | '/app/architecture'
     | '/app/assistant'
     | '/app/roi'
     | '/app/statement'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/login'
     | '/app/admin'
+    | '/app/architecture'
     | '/app/assistant'
     | '/app/roi'
     | '/app/statement'
@@ -178,6 +190,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAssistantRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/architecture': {
+      id: '/app/architecture'
+      path: '/architecture'
+      fullPath: '/app/architecture'
+      preLoaderRoute: typeof AppArchitectureRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/admin': {
       id: '/app/admin'
       path: '/admin'
@@ -190,6 +209,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppAdminRoute: typeof AppAdminRoute
+  AppArchitectureRoute: typeof AppArchitectureRoute
   AppAssistantRoute: typeof AppAssistantRoute
   AppRoiRoute: typeof AppRoiRoute
   AppStatementRoute: typeof AppStatementRoute
@@ -198,6 +218,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppAdminRoute: AppAdminRoute,
+  AppArchitectureRoute: AppArchitectureRoute,
   AppAssistantRoute: AppAssistantRoute,
   AppRoiRoute: AppRoiRoute,
   AppStatementRoute: AppStatementRoute,

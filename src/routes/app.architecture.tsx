@@ -8,7 +8,11 @@ export const Route = createFileRoute("/app/architecture")({
   component: Architecture,
 });
 
-const LAYERS = [
+const LAYERS: Array<{
+  icon: React.ComponentType<{ size?: number }>;
+  title: string; tag: string; body: string;
+  tone: "brand" | "success" | "neutral";
+}> = [
   {
     icon: Users, title: "Customer", tag: "Bharat persona",
     body: "Voice, text, Hindi / English / Hinglish. Senior-mode UI optional.",
