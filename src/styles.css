@@ -75,12 +75,6 @@
   --shadow-elevated: 0 4px 12px rgba(28, 79, 163, 0.08), 0 2px 4px rgba(17, 24, 39, 0.04);
 }
 
-@utility container-page {
-  max-width: 1200px;
-  margin-inline: auto;
-  padding-inline: 1.25rem;
-}
-
 /* Subtle banking-appropriate animations */
 @keyframes avanya-fade-up {
   from { opacity: 0; transform: translateY(8px); }
