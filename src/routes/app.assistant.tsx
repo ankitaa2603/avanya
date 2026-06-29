@@ -236,6 +236,21 @@ export default function AssistantPage() {
             >
               <MicIcon />
             </button>
+            {listening ? (
+              <div className="flex-1 h-12 rounded-xl border border-brand/40 bg-brand-soft/40 flex items-center justify-center gap-1 px-4">
+                {Array.from({ length: 18 }).map((_, i) => (
+                  <span
+                    key={i}
+                    className="block w-0.5 rounded-full bg-brand origin-center"
+                    style={{
+                      height: 22,
+                      animation: `avanya-wave 0.9s ease-in-out ${i * 60}ms infinite`,
+                    }}
+                  />
+                ))}
+                <span className="ml-3 text-xs text-brand font-medium">Listening…</span>
+              </div>
+            ) : (
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -246,9 +261,10 @@ export default function AssistantPage() {
                 }
               }}
               rows={1}
-              placeholder={listening ? "Listening…" : "Type or speak your question…"}
+              placeholder="Type or speak your question…"
               className="flex-1 resize-none rounded-xl border border-border bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand/40 focus:border-brand"
             />
+            )}
             <button
               type="submit"
               disabled={!input.trim() || loading}

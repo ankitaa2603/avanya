@@ -1,5 +1,6 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import confetti from "canvas-confetti";
 import { useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/app/statement")({
@@ -49,6 +50,12 @@ function StatementFlow() {
     bumpScore("statement", 25);
     unlock("first_statement");
     setDone(true);
+    // Subtle banking-appropriate confetti
+    try {
+      const colors = ["#1C4FA3", "#2E6FD8", "#16A34A", "#F59E0B"];
+      confetti({ particleCount: 70, spread: 60, origin: { y: 0.35 }, colors, scalar: 0.85, ticks: 160 });
+      setTimeout(() => confetti({ particleCount: 40, spread: 90, origin: { y: 0.45 }, colors, scalar: 0.7 }), 220);
+    } catch { /* noop */ }
     if (demoMode) {
       autoRef.current = setTimeout(() => {
         setDemoMode(false);
@@ -153,9 +160,11 @@ function StatementFlow() {
             </button>
           </div>
         ) : (
-          <div className="mt-7 rounded-2xl border border-success/30 bg-success/5 p-5">
+          <div className="mt-7 rounded-2xl border border-success/30 bg-success/5 p-5 animate-fade-up">
             <div className="flex items-center gap-3">
-              <div className="size-10 rounded-full bg-success text-white font-bold flex items-center justify-center">✓</div>
+              <div className="size-10 rounded-full bg-success text-white font-bold flex items-center justify-center animate-check-pop">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+              </div>
               <div>
                 <div className="font-semibold text-foreground">Statement downloaded</div>
                 <div className="text-sm text-muted-foreground">
