@@ -278,6 +278,36 @@ export default function AssistantPage() {
 
       <aside className="space-y-4">
         <div className="rounded-2xl border border-border bg-card p-5 shadow-card">
+          <div className="text-xs font-medium uppercase tracking-[0.14em] text-brand">Voice</div>
+          <p className="mt-2 text-xs text-muted-foreground">Choose how AVANYA speaks. Indian voices are preferred when available.</p>
+          <div className="mt-3 space-y-2">
+            {([
+              { v: "auto", label: "Auto (detect language)" },
+              { v: "hi-IN", label: "Hindi (India)" },
+              { v: "en-IN", label: "English (India)" },
+            ] as { v: VoicePref; label: string }[]).map((o) => (
+              <label
+                key={o.v}
+                className={
+                  "flex items-center gap-2.5 rounded-lg border px-3 py-2 text-sm cursor-pointer transition-colors " +
+                  (voicePref === o.v
+                    ? "border-brand bg-brand-soft text-foreground"
+                    : "border-border bg-background hover:bg-muted")
+                }
+              >
+                <input
+                  type="radio"
+                  name="avanya-voice"
+                  className="accent-[color:var(--brand,#1C4FA3)]"
+                  checked={voicePref === o.v}
+                  onChange={() => setVoicePref(o.v)}
+                />
+                {o.label}
+              </label>
+            ))}
+          </div>
+        </div>
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-card">
           <div className="text-xs font-medium uppercase tracking-[0.14em] text-brand">Try saying</div>
           <div className="mt-3 space-y-2">
             {SAMPLE_PROMPTS.map((p) => (
