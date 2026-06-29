@@ -160,9 +160,11 @@ function StatementFlow() {
             </button>
           </div>
         ) : (
-          <div className="mt-7 rounded-2xl border border-success/30 bg-success/5 p-5">
+          <div className="mt-7 rounded-2xl border border-success/30 bg-success/5 p-5 animate-fade-up">
             <div className="flex items-center gap-3">
-              <div className="size-10 rounded-full bg-success text-white font-bold flex items-center justify-center">✓</div>
+              <div className="size-10 rounded-full bg-success text-white font-bold flex items-center justify-center animate-check-pop">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+              </div>
               <div>
                 <div className="font-semibold text-foreground">Statement downloaded</div>
                 <div className="text-sm text-muted-foreground">
