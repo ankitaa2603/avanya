@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { StoreProvider } from "../lib/store";
 
 function NotFoundComponent() {
   return (
@@ -77,11 +78,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "AVANYA — AI Voice Assistant for Navigation & YONO Adoption" },
+      { name: "description", content: "Every customer deserves a branch in their pocket. AVANYA is an AI-powered digital banking companion that helps customers navigate SBI services with confidence." },
+      { name: "author", content: "Team Mavericks" },
+      { name: "theme-color", content: "#1C4FA3" },
+      { property: "og:title", content: "AVANYA — A branch in your pocket" },
+      { property: "og:description", content: "AI Voice Assistant for Navigation & YONO Adoption. Built for SBI Global FinTech Fest 2026." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
@@ -118,8 +120,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <StoreProvider>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </StoreProvider>
     </QueryClientProvider>
   );
 }
