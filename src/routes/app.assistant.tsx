@@ -2,6 +2,7 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { askAvanya } from "@/lib/avanya.functions";
 import { useStore } from "@/lib/store";
+import { speak, ensureVoicesLoaded, type VoicePref } from "@/lib/tts";
 
 export const Route = createFileRoute("/app/assistant")({
   component: AssistantPage,
@@ -42,6 +43,14 @@ function shouldOfferStatementFlow(q: string) {
 export default function AssistantPage() {
   const router = useRouter();
   const { demoMode } = useStore();
+  const [voicePref, setVoicePref] = useState<VoicePref>(() => {
+    if (typeof window === "undefined") return "auto";
+    return (window.localStorage.getItem("avanya:voicePref") as VoicePref) || "auto";
+  });
+  useEffect(() => {
+    ensureVoicesLoaded();
+    try { window.localStorage.setItem("avanya:voicePref", voicePref); } catch { /* ignore */ }
+  }, [voicePref]);
   const [messages, setMessages] = useState<Msg[]>([
     {
       role: "assistant",
@@ -72,26 +81,17 @@ export default function AssistantPage() {
         const reply = res.ok ? res.reply : pickScripted(text);
         setMessages((m) => [...m, { role: "assistant", text: reply, scripted: !res.ok }]);
         if (shouldOfferStatementFlow(text)) setOfferFlow(true);
-        try {
-          if (typeof window !== "undefined" && "speechSynthesis" in window) {
-            const u = new SpeechSynthesisUtterance(reply.replace(/\n+/g, " "));
-            u.rate = 1;
-            u.pitch = 1;
-            window.speechSynthesis.cancel();
-            window.speechSynthesis.speak(u);
-          }
-        } catch {
-          /* tts optional */
-        }
+        try { speak(reply, voicePref); } catch { /* tts optional */ }
       } catch {
         const reply = pickScripted(text);
         setMessages((m) => [...m, { role: "assistant", text: reply, scripted: true }]);
         if (shouldOfferStatementFlow(text)) setOfferFlow(true);
+        try { speak(reply, voicePref); } catch { /* tts optional */ }
       } finally {
         setLoading(false);
       }
     },
-    [loading]
+    [loading, voicePref]
   );
 
   // Judge demo auto-play
@@ -277,6 +277,36 @@ export default function AssistantPage() {
       </section>
 
       <aside className="space-y-4">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-card">
+          <div className="text-xs font-medium uppercase tracking-[0.14em] text-brand">Voice</div>
+          <p className="mt-2 text-xs text-muted-foreground">Choose how AVANYA speaks. Indian voices are preferred when available.</p>
+          <div className="mt-3 space-y-2">
+            {([
+              { v: "auto", label: "Auto (detect language)" },
+              { v: "hi-IN", label: "Hindi (India)" },
+              { v: "en-IN", label: "English (India)" },
+            ] as { v: VoicePref; label: string }[]).map((o) => (
+              <label
+                key={o.v}
+                className={
+                  "flex items-center gap-2.5 rounded-lg border px-3 py-2 text-sm cursor-pointer transition-colors " +
+                  (voicePref === o.v
+                    ? "border-brand bg-brand-soft text-foreground"
+                    : "border-border bg-background hover:bg-muted")
+                }
+              >
+                <input
+                  type="radio"
+                  name="avanya-voice"
+                  className="accent-[color:var(--brand,#1C4FA3)]"
+                  checked={voicePref === o.v}
+                  onChange={() => setVoicePref(o.v)}
+                />
+                {o.label}
+              </label>
+            ))}
+          </div>
+        </div>
         <div className="rounded-2xl border border-border bg-card p-5 shadow-card">
           <div className="text-xs font-medium uppercase tracking-[0.14em] text-brand">Try saying</div>
           <div className="mt-3 space-y-2">
